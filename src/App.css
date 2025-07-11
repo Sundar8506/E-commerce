@@ -1,0 +1,51 @@
+.App{
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+.appHeader{
+  height: 60px;
+  display: flex;
+  font-display:  #000000;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 1px 2px 2px #00fbff;
+}
+
+.soppingCartIcon{
+  font-size: 40px;
+  margin-right: 16px;
+  cursor: pointer;
+}
+.productsContainer{
+  padding: 8px;
+}
+.appMenu{
+  border: none;
+  
+
+
+
+}
+.pageContent{
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 2px;
+}
+.appFooter{
+  height: 60px;
+  background-color: rgb(0, 0, 0);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+}
+.itemCard, .itemCardBadge{
+  margin: 8px;
+}
+.itemCardImage{
+  height: 150px !important;
+  object-fit: scale-down;
+}
