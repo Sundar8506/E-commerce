@@ -12,11 +12,9 @@ import {
   Table,
   Typography,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCart } from "../../API";
-
-function AppHeader() {
+function AppHeader({ cartItems, refreshCart }) {
   const navigate = useNavigate();
 
   const onMenuClick = (item) => {
@@ -24,17 +22,19 @@ function AppHeader() {
   };
   return (
     <div className="appHeader">
+      <div className="logoContainer">
+        <img src="/shopping.png" alt="Shopping Icon" className="shoppingIcon" />
+      <Typography.Title>Fake Store</Typography.Title>
+      </div>
       <Menu
         className="appMenu"
         onClick={onMenuClick}
         mode="horizontal"
-       
         items={[
           {
             label: <HomeFilled />,
             key: "",
           },
-        
           {
             label: "Men",
             key: "men",
@@ -80,7 +80,7 @@ function AppHeader() {
             ],
           },
           {
-            label: "Fragrances",
+            label:"Fragrances",
             key: "fragrances",
           },
           {
@@ -95,23 +95,16 @@ function AppHeader() {
             label: "Beauty",
             key: "beauty",
           },
-        
         ]}
       />
-      <Typography.Title>Fake Store</Typography.Title>
-      <AppCart />
+      <AppCart cartItems={cartItems} refreshCart={refreshCart} />
     </div>
   );
 }
-function AppCart() {
+function AppCart({ cartItems, refreshCart }) {
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([getCart]);
-  useEffect(() => {
-    getCart().then((res) => {
-      setCartItems(res.products);
-    });
-  }, []);
+
   const onConfirmOrder = (values) => {
     setCartDrawerOpen(false);
     setCheckoutDrawerOpen(false);
@@ -119,14 +112,12 @@ function AppCart() {
   };
 
   return (
-    <div >
+    <div>
       <Badge
-     
         onClick={() => {
           setCartDrawerOpen(true);
         }}
-        
-        count={Array.length}
+        count={cartItems.length}
         className="soppingCartIcon"
       >
         <ShoppingCartOutlined />
@@ -139,7 +130,7 @@ function AppCart() {
         title="Your Cart"
         contentWrapperStyle={{ width: 500 }}
       >
-        <Table 
+        <Table
           pagination={false}
           columns={[
             {
@@ -162,14 +153,8 @@ function AppCart() {
                     min={0}
                     defaultValue={value}
                     onChange={(value) => {
-                      setCartItems((pre) =>
-                        pre.map((cart) => {
-                          if (record.id === cart.id) {
-                            cart.total = cart.price * value;
-                          }
-                          return cart;
-                        })
-                      );
+                      // Update quantity locally
+                      refreshCart();
                     }}
                   ></InputNumber>
                 );
@@ -196,7 +181,6 @@ function AppCart() {
             setCheckoutDrawerOpen(true);
           }}
           type="primary"
-         
         >
           Checkout Your Cart
         </Button>
@@ -247,17 +231,10 @@ function AppCart() {
             <Input placeholder="Enter your full address.." />
           </Form.Item>
           <Form.Item>
-            <Checkbox>
-              Cash on Delivery
-
-            </Checkbox><br/>
-            <br/>
-            <Checkbox>
-            
-           
-            
-             Remind me on Email
-            </Checkbox>
+            <Checkbox>Cash on Delivery</Checkbox>
+            <br />
+            <br />
+            <Checkbox>Remind me on Email</Checkbox>
           </Form.Item>
           <Typography.Paragraph type="secondary">
             More methods coming soon.......!

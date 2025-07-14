@@ -11,10 +11,10 @@ import {
   Select,
 } from "antd";
 import { useEffect, useState } from "react";
-import { addToCart, getAllProducts, getProductsByCategory } from "../../API";
+import { getAllProducts, getProductsByCategory } from "../../API";
 import { useParams } from "react-router-dom";
 
-function Products() {
+function Products({ addToCart }) {
   const [loading, setLoading] = useState(false);
   const param = useParams();
   const [items, setItems] = useState([]);
@@ -32,14 +32,13 @@ function Products() {
 
   const getSortedItems = () => {
     const sortedItems = [...items];
-    
+
     // eslint-disable-next-line
     sortedItems.sort((a, b) => {
       const aLowerCaseTitle = a.title.toLowerCase();
       const bLowerCaseTitle = b.title.toLowerCase();
 
-
-    if (sortOrder === "high") {
+      if (sortOrder === "high") {
         return a.rating < b.rating ? 1 : a.rating === b.rating ? 0 : -1;
       }
 
@@ -55,20 +54,17 @@ function Products() {
           : aLowerCaseTitle === bLowerCaseTitle
           ? 0
           : -1;
-      }   
-       else if (sortOrder === "lowHigh") {
+      } else if (sortOrder === "lowHigh") {
         return a.price > b.price ? 1 : a.price === b.price ? 0 : -1;
       } else if (sortOrder === "highLow") {
         return a.price < b.price ? 1 : a.price === b.price ? 0 : -1;
       }
-     
     });
     return sortedItems;
   };
-  if(loading){
-    return<Spin spinning/>;
-  };
-
+  if (loading) {
+    return <Spin spinning />;
+  }
 
   return (
     <div className="productsContainer">
@@ -83,8 +79,8 @@ function Products() {
             {
               label: "Alphabetically a-z",
               value: "az",
-            }, 
-             {
+            },
+            {
               label: "Rating",
               value: "high",
             },
@@ -105,7 +101,15 @@ function Products() {
       </div>
       <List
         loading={loading}
-        grid={{ column: 3}}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 2,
+          md: 2,
+          lg: 3,
+          xl: 3,
+          xxl: 3,
+        }}
         renderItem={(product, index) => {
           return (
             <Badge.Ribbon
@@ -122,9 +126,8 @@ function Products() {
                 }
                 actions={[
                   <Rate allowHalf disabled value={product.rating} />,
-                  <AddToCartButton item={product} />,
+                  <AddToCartButton item={product} addToCart={addToCart} />,
                 ]}
-                
               >
                 <Card.Meta
                   title={
@@ -156,24 +159,21 @@ function Products() {
     </div>
   );
 }
-function AddToCartButton({ item }) {
-
-  const [loading] = useState(false);
-  const handleAddToCart = (id) => {
-    addToCart(id).then((cart) => {
-      message.success("Item added to cart!");
-      console.log("Updated Cart:",cart); // Debugging log
-    }).catch(() => {
-      message.error("Failed to add item to cart.");
-    });
+function AddToCartButton({ item, addToCart }) {
+  const [loading, setLoading] = useState(false);
+  const handleAddToCart = (product) => {
+    setLoading(true);
+    addToCart(product);
+    message.success("Item added to cart!");
+    setLoading(false);
   };
- 
+
   return (
     <Button
       type="link"
       id={item.id}
       onClick={() => {
-        handleAddToCart();
+        handleAddToCart(item);
       }}
       loading={loading}
     >

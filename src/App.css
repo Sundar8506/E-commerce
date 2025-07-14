@@ -11,6 +11,7 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 1px 2px 2px #00fbff;
+  flex-wrap: nowrap;
 }
 
 .soppingCartIcon{
@@ -23,10 +24,17 @@
 }
 .appMenu{
   border: none;
-  
+  flex-wrap: nowrap;
+  display: flex;
+  align-items: center;
+}
 
-
-
+.appMenu .ant-menu-item, .appMenu .ant-menu-submenu-title {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 .pageContent{
   display: flex;
@@ -40,12 +48,120 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-
+  flex-wrap: nowrap;
 }
+.appFooter a{
+  color: #ffffff;
+  text-decoration: none;
+  transition: text-shadow 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.appFooter a:hover {
+  text-shadow: 0 0 8px #00ffff;
+  box-shadow: 0 0 12px #00ffff;
+}
+
 .itemCard, .itemCardBadge{
   margin: 8px;
 }
 .itemCardImage{
   height: 150px !important;
   object-fit: scale-down;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .appHeader {
+    flex-direction: column;
+    height: auto;
+    padding: 8px 0;
+    align-items: center;
+    position: relative;
+  }
+  .appMenu {
+    width: 100%;
+    overflow-x: visible;
+    flex-wrap: wrap;
+  }
+  .appMenu .ant-menu-item {
+    padding: 8px 12px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .appMenu .ant-menu-item:first-child {
+    display: none;
+  }
+  .appHeader > .ant-typography {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .soppingCartIcon {
+    font-size: 32px;
+    margin-right: 8px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+  .productsContainer {
+    padding: 4px;
+  }
+  .pageContent {
+    flex-direction: column;
+    margin-top: 0;
+  }
+  .itemCardImage {
+    height: 120px !important;
+  }
+  .itemCard, .itemCardBadge {
+    margin: 4px;
+  }
+  .appFooter {
+    flex-direction: column;
+    height: auto;
+    padding: 8px 0;
+    align-items: center;
+  }
+}
+
+/* Additional improvements for very small screens */
+@media (max-width: 480px) {
+  .appHeader {
+    padding: 4px 0;
+  }
+  .appMenu .ant-menu-item {
+    font-size: 12px;
+    padding: 6px 8px;
+    align-items: center;
+  }
+  .soppingCartIcon {
+    font-size: 28px;
+    margin-right: 4px;
+  }
+  .productsContainer {
+    padding: 2px;
+  }
+  .itemCardImage {
+    height: 100px !important;
+  }
+  .itemCard, .itemCardBadge {
+    margin: 2px;
+  }
+  .appFooter {
+    padding: 50px 0;
+  }
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shoppingIcon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }

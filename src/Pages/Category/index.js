@@ -1,9 +1,9 @@
 import Products from "../../Components/Products";
 
-function Category() {
+function Category(props) {
   return (
     <div>
-      <Products />
+      <Products addToCart={props.addToCart} />
     </div>
   );
 }
