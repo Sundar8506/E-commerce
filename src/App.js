@@ -24,13 +24,18 @@ function App() {
   };
 
   const updateQuantity = (productId, quantity) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === productId
-          ? { ...item, quantity, total: quantity * item.price }
-          : item
-      )
-    );
+    setCartItems((prevItems) => {
+      if (quantity === 0) {
+        // Remove item if quantity is 0
+        return prevItems.filter((item) => item.id !== productId);
+      } else {
+        return prevItems.map((item) =>
+          item.id === productId
+            ? { ...item, quantity, total: quantity * item.price }
+            : item
+        );
+      }
+    });
   };
 
   return (

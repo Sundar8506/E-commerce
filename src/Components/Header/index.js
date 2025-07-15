@@ -14,7 +14,29 @@ import {
 } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-function AppHeader({ cartItems, refreshCart }) {
+
+function QuantityInputCell({ value, record, updateQuantity }) {
+  const [localQuantity, setLocalQuantity] = useState(value);
+
+  const onLocalChange = (val) => {
+    setLocalQuantity(val);
+  };
+
+  const onLocalBlur = () => {
+    updateQuantity(record.id, localQuantity);
+  };
+
+  return (
+    <InputNumber
+      min={0}
+      value={localQuantity}
+      onChange={onLocalChange}
+      onBlur={onLocalBlur}
+    />
+  );
+}
+
+function AppHeader({ cartItems, updateQuantity }) {
   const navigate = useNavigate();
 
   const onMenuClick = (item) => {
@@ -97,11 +119,11 @@ function AppHeader({ cartItems, refreshCart }) {
           },
         ]}
       />
-      <AppCart cartItems={cartItems} refreshCart={refreshCart} />
+      <AppCart cartItems={cartItems} updateQuantity={updateQuantity} />
     </div>
   );
 }
-function AppCart({ cartItems, refreshCart }) {
+function AppCart({ cartItems, updateQuantity }) {
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [checkoutDrawerOpen, setCheckoutDrawerOpen] = useState(false);
 
@@ -149,14 +171,11 @@ function AppCart({ cartItems, refreshCart }) {
               dataIndex: "quantity",
               render: (value, record) => {
                 return (
-                  <InputNumber
-                    min={0}
-                    defaultValue={value}
-                    onChange={(value) => {
-                      // Update quantity locally
-                      refreshCart();
-                    }}
-                  ></InputNumber>
+                  <QuantityInputCell
+                    value={value}
+                    record={record}
+                    updateQuantity={updateQuantity}
+                  />
                 );
               },
             },

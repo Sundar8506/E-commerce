@@ -172,7 +172,8 @@ function AddToCartButton({ item, addToCart }) {
     <Button
       type="link"
       id={item.id}
-      onClick={() => {
+      onClick={(e) => {
+        e.preventDefault();
         handleAddToCart(item);
       }}
       loading={loading}
